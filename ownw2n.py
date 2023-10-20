@@ -144,8 +144,9 @@ def word_to_num(number_sentence):
 
     return total_sum
 
-s=input().split()
+s='скобка открывается один плюс два скобка закрывается умножить на скобка открывается один плюс два скобка закрывается'.split()
 print(s)
+
 for i in range(len(s)-1):
     if s[i]=='плюс':
         s[i]='+'
@@ -157,18 +158,32 @@ for i in range(len(s)-1):
     elif s[i]=='поделить' and s[i+1]=='на':
         s[i]='/'
         del s[i+1]
-    elif s[i]!='*' and s[i]!='+' and s[i]!='-' and s[i]!='/':
-        print(s[i])
+    elif s[i]=='скобка' and s[i+1]=='открывается':
+        s[i]='('
+    elif s[i]=='скобка' and s[i+1]=='закрывается':
+        s[i]=')'
+    elif s[i]!='*' and s[i]!='+' and s[i]!='-' and s[i]!='/' and s[i]!='(' and s[i]!=')' and s[i]!='закрывается' and s[i]!='открывается':
         s[i]=word_to_num(s[i])
-n=len(s)
+    else:
+        continue
 
-if not(str(s[n-1]).isnumeric()):
+n=len(s)
+if not(str(s[n-1]).isnumeric()) and s[n-1]!='закрывается' and s[n-1]!='открывается':
     s[n-1]=word_to_num(s[n-1])
+elif s[n-1]=='закрывается':
+    del s[i]
+b=len(s)
+
 
 for i in range(len(s)-1): 
-    if (s[i]!='/' and s[i]!='*' and s[i]!='+' and s[i]!='-') and (s[i+1]!='/' and s[i+1]!='*' and s[i+1]!='+' and s[i+1]!='-'):
+    if str(s[i]).isnumeric() and str(s[i+1]).isnumeric():
+    #if (s[i]!='/' and s[i]!='*' and s[i]!='+' and s[i]!='-' and s[i]!='(' and s[i]!=')') and (s[i+1]!='/' and s[i+1]!='*' and s[i+1]!='+' and s[i+1]!='-' and s[i+1]!='(' and s[i+1]!=')') or (str(s[i]).isnumeric()==False and str(s[i+1]).isnumeric()):
         s[i]+=s[i+1]
         s[i+1]=''
+
+for i in range(len(s)):
+    if s[i]=='открывается' or s[i]=='закрывается':
+        s[i]=''
 
 new_s=''
 for i in range(len(s)):
