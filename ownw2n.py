@@ -3,10 +3,8 @@ import decimal
 
 units = (
     u'ноль',
-
     (u'один', u'одна'),
     (u'два', u'две'),
-
     u'три', u'четыре', u'пять',
     u'шесть', u'семь', u'восемь', u'девять'
 )
@@ -46,7 +44,7 @@ minus = u'минус'
 
 
 def thousand(rest, sex):
-    """Converts numbers from 19 to 999"""
+    """Переводит числа от 19 до 999"""
     prev = 0
     plural = 2
     name = []
@@ -195,30 +193,27 @@ def word_to_num(number_sentence):
         raise ValueError("Type of input is not string! Please enter a valid number word (eg. \'two million twenty three thousand and forty nine\')")
 
     number_sentence = number_sentence.replace('-', ' ')
-    number_sentence = number_sentence.lower()  # converting input to lowercase
+    number_sentence = number_sentence.lower()
 
-    if(number_sentence.isdigit()):  # return the number if user enters a number string
+    if(number_sentence.isdigit()):
         return int(number_sentence)
 
-    split_words = number_sentence.strip().split()  # strip extra spaces and split sentence into words
+    split_words = number_sentence.strip().split()
 
     clean_numbers = []
     clean_decimal_numbers = []
 
-    # removing and, & etc.
     for word in split_words:
         if word in number_system:
             clean_numbers.append(word)
 
-    # Error message if the user enters invalid input!
+    # чек ошибочного ввода
     if len(clean_numbers) == 0:
-        raise ValueError("No valid number words found! Please enter a valid number word (eg. two million twenty three thousand and forty nine)") 
+        raise ValueError("Неправильный ввод") 
 
-    # Error if user enters million,billion, thousand or decimal point twice
     if clean_numbers.count('thousand') > 1 or clean_numbers.count('million') > 1 or clean_numbers.count('billion') > 1 or clean_numbers.count('point')> 1:
-        raise ValueError("Redundant number word! Please enter a valid number word (eg. two million twenty three thousand and forty nine)")
+        raise ValueError("Неправильный ввод")
 
-    # separate decimal part of number (if exists)
     if clean_numbers.count('point') == 1:
         clean_decimal_numbers = clean_numbers[clean_numbers.index('point')+1:]
         clean_numbers = clean_numbers[:clean_numbers.index('point')]
@@ -228,12 +223,11 @@ def word_to_num(number_sentence):
     thousand_index = clean_numbers.index('thousand') if 'thousand' in clean_numbers else -1
 
     if (thousand_index > -1 and (thousand_index < million_index or thousand_index < billion_index)) or (million_index>-1 and million_index < billion_index):
-        raise ValueError("Malformed number! Please enter a valid number word (eg. two million twenty three thousand and forty nine)")
+        raise ValueError("Неправильный ввод")
 
-    total_sum = 0  # storing the number to be returned
+    total_sum = 0
 
     if len(clean_numbers) > 0:
-        # hack for now, better way TODO
         if len(clean_numbers) == 1:
                 total_sum += number_system[clean_numbers[0]]
 
@@ -269,14 +263,13 @@ def word_to_num(number_sentence):
             else:
                 hundreds = 0
             total_sum += hundreds
-    # adding decimal part to total_sum (if exists)
     if len(clean_decimal_numbers) > 0:
         decimal_sum = get_decimal_sum(clean_decimal_numbers)
         total_sum += decimal_sum
 
     return total_sum
 
-s='скобка открывается десять плюс два скобка закрывается умножить на скобка открывается десять плюс два скобка закрывается'.split()
+s=input().split()
 print(s)
 
 for i in range(len(s)-1):
@@ -309,7 +302,6 @@ b=len(s)
 
 for i in range(len(s)-1): 
     if str(s[i]).isnumeric() and str(s[i+1]).isnumeric():
-    #if (s[i]!='/' and s[i]!='*' and s[i]!='+' and s[i]!='-' and s[i]!='(' and s[i]!=')') and (s[i+1]!='/' and s[i+1]!='*' and s[i+1]!='+' and s[i+1]!='-' and s[i+1]!='(' and s[i+1]!=')') or (str(s[i]).isnumeric()==False and str(s[i+1]).isnumeric()):
         s[i]+=s[i+1]
         s[i+1]=''
 
