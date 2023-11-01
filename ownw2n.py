@@ -33,8 +33,7 @@ hundreds = (
     u'девятьсот'
 )
 
-orders = (# plural forms and gender
-    #((u'', u'', u''), 'm'), # ((u'рубль', u'рубля', u'рублей'), 'm'), # ((u'копейка', u'копейки', u'копеек'), 'f')
+orders = (# множественные числа
     ((u'тысяча', u'тысячи', u'тысяч'), 'f'),
     ((u'миллион', u'миллиона', u'миллионов'), 'm'),
     ((u'миллиард', u'миллиарда', u'миллиардов'), 'm'),
@@ -44,7 +43,6 @@ minus = u'минус'
 
 
 def thousand(rest, sex):
-    """Переводит числа от 19 до 999"""
     prev = 0
     plural = 2
     name = []
@@ -115,14 +113,9 @@ if __name__ == '__main__':
         try:
             num = sys.argv[1]
             if '.' in num:
-                print(decimal2text(
-                    decimal.Decimal(num),
-                    int_units=((u'штука', u'штуки', u'штук'), 'f'),
-                    exp_units=((u'кусок', u'куска', u'кусков'), 'm')))
+                print(decimal2text(decimal.Decimal(num)))
             else:
-                print(num2text(
-                    int(num),
-                    main_units=((u'штука', u'штуки', u'штук'), 'f')))
+                print(num2text(int(num)))
         except ValueError:
             print (sys.stderr, "Invalid argument {}".format(sys.argv[1]))
         sys.exit()
@@ -190,7 +183,7 @@ def get_decimal_sum(decimal_digit_words):
 
 def word_to_num(number_sentence):
     if type(number_sentence) is not str:
-        raise ValueError("Type of input is not string! Please enter a valid number word (eg. \'two million twenty three thousand and forty nine\')")
+        raise ValueError("Ввод не есть строка!")
 
     number_sentence = number_sentence.replace('-', ' ')
     number_sentence = number_sentence.lower()
